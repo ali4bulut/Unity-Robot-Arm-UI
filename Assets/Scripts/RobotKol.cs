@@ -10,6 +10,7 @@ public class RobotKol : MonoBehaviour
     public GameObject Axis4;
     public GameObject Axis5;
     public GameObject Axis6;
+    public Transform Tcp;
 
     public Panel panel;
     public MoveObj move;
@@ -85,18 +86,27 @@ public class RobotKol : MonoBehaviour
             Axis2.transform.localRotation = Quaternion.Slerp(Axis2.transform.localRotation, Quaternion.Euler(-panel.savedPositions[(i * 9) + 1], 0, 0), Time.deltaTime * 4f);
             Axis1.transform.localRotation = Quaternion.Slerp(Axis1.transform.localRotation, Quaternion.Euler(0, -panel.savedPositions[i * 9], 0), Time.deltaTime * 4f);
 
-            if (i == panel.savedCnt - 1)
-            {
-                panel.J1slider.value = panel.savedPositions[i * 9];
-                panel.J2slider.value = panel.savedPositions[(i * 9) + 1];
-                panel.J3slider.value = panel.savedPositions[(i * 9) + 2];
-                panel.J4slider.value = panel.savedPositions[(i * 9) + 3];
-                panel.J5slider.value = panel.savedPositions[(i * 9) + 4];
-                panel.J6slider.value = panel.savedPositions[(i * 9) + 5];
-            }
+            panel.J1slider.value = panel.savedPositions[i * 9];
+            panel.J2slider.value = panel.savedPositions[(i * 9) + 1];
+            panel.J3slider.value = panel.savedPositions[(i * 9) + 2];
+            panel.J4slider.value = panel.savedPositions[(i * 9) + 3];
+            panel.J5slider.value = panel.savedPositions[(i * 9) + 4];
+            panel.J6slider.value = panel.savedPositions[(i * 9) + 5];
 
             Vector3 pos = new Vector3(panel.savedPositions[(i * 9) + 6], panel.savedPositions[(i * 9) + 7], panel.savedPositions[(i * 9) + 8]);
-            if (comm.transform.position.x - pos.x < .5f & comm.transform.position.y - pos.y < .5f & comm.transform.position.z - pos.z < .5f) i++;
+            Debug.Log(Mathf.Abs(Tcp.position.x) - Mathf.Abs(pos.x));
+            Debug.Log(Mathf.Abs(Tcp.position.y) - Mathf.Abs(pos.y));
+            Debug.Log(Mathf.Abs(Tcp.position.z) - Mathf.Abs(pos.z));
+            if (Mathf.Abs(Tcp.position.x) - Mathf.Abs(pos.x) < 2 && Mathf.Abs(Tcp.position.x) - Mathf.Abs(pos.x) > -2)
+            {
+                if (Mathf.Abs(Tcp.position.y) - Mathf.Abs(pos.y) < 2 && Mathf.Abs(Tcp.position.y) - Mathf.Abs(pos.y) > -2)
+                {
+                    if (Mathf.Abs(Tcp.position.z) - Mathf.Abs(pos.z) < 2 && Mathf.Abs(Tcp.position.z) - Mathf.Abs(pos.z) > -2)
+                    {
+                        i++;
+                    }
+                }
+            }
         }
         else
         {

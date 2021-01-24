@@ -40,9 +40,13 @@ public class Comm : MonoBehaviour
     }
     private void Update()
     {
+        float a = move.panel.arduinoCon ? 1.0f : 0.0f;
+
         poz = move.EndEfector.transform.position[2].ToString("F2").Replace(",", ".") + "|" + (-move.EndEfector.transform.position[0]).ToString("F2").Replace(",", ".") + "|" +
             move.EndEfector.transform.position[1].ToString("F2").Replace(",", ".") + "|" + move.alfa.ToString("F2").Replace(",", ".") + "|" + move.beta.ToString("F2").Replace(",", ".") + "|" +
-            move.gama.ToString("F2").Replace(",", ".");
+            move.gama.ToString("F2").Replace(",", ".") + "|" + a + "|" + move.panel.J1slider.value.ToString("F2").Replace(",", ".") + "|" + move.panel.J2slider.value.ToString("F2").Replace(",", ".")
+            + "|" + move.panel.J3slider.value.ToString("F2").Replace(",", ".") + "|" + move.panel.J4slider.value.ToString("F2").Replace(",", ".") + "|" + move.panel.J5slider.value.ToString("F2").Replace(",", ".")
+            + "|" + move.panel.J6slider.value.ToString("F2").Replace(",", ".");
 
 
         //string a = Acilar[0].ToString() + " / " + Acilar[1].ToString()+ " / " + Acilar[2].ToString()+ " / " + Acilar[3].ToString()+ " / "+ Acilar[4].ToString()+ " / " + Acilar[5].ToString();

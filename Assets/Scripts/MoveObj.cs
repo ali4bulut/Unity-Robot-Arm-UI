@@ -19,6 +19,8 @@ public class MoveObj : MonoBehaviour
 
     private void Start()
     {
+        gameObject.transform.position = new Vector3(0, 812.95f, 642.75f);
+        gameObject.transform.localRotation = Quaternion.Euler(90, 0, 0);
         panel.tX.text = EndEfector.transform.position[2].ToString("F2").Replace(",", ".");
         panel.tY.text = (-EndEfector.transform.position[0]).ToString("F2").Replace(",", ".");
         panel.tZ.text = EndEfector.transform.position[1].ToString("F2").Replace(",", ".");
@@ -79,15 +81,15 @@ public class MoveObj : MonoBehaviour
 
         if (panel.rstBut)
         {
-            gameObject.transform.position = new Vector3(0, 980, 478.5f);
-            gameObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            gameObject.transform.position = new Vector3(0, 812.95f, 642.75f);
+            gameObject.transform.localRotation = Quaternion.Euler(90, 0, 0);
             panel.rstBut = false;
         }
 
         panel.tX.text = EndEfector.transform.position[2].ToString("F2").Replace(",", ".");
         panel.tY.text = (-EndEfector.transform.position[0]).ToString("F2").Replace(",", ".");
         panel.tZ.text = EndEfector.transform.position[1].ToString("F2").Replace(",", ".");
-     
+
 
         if (panel.isOk)
         {

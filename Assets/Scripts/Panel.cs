@@ -33,13 +33,13 @@ public class Panel : MonoBehaviour
     public InputField Y_EulerInput;
     public InputField Z_EulerInput2;
 
-    public Button reseetBut, runBut;
+    public Button reseetBut, runBut, arduinoBut;
 
     public float X_position, Y_position, Z_position, z1Euler, yEuler, z2Euler;
 
     public float j1, j2, j3, j4, j5, j6;
 
-    public bool isOk = false, rstBut = false, isRun = false, isFollow = false, isRepeat = false;
+    public bool isOk = false, rstBut = false, isRun = false, isFollow = false, isRepeat = false,arduinoCon = false;
 
     public RobotKol robot;
 
@@ -217,8 +217,10 @@ public class Panel : MonoBehaviour
         savedPositions.Add(robot.comm.transform.position.y);
         savedPositions.Add(robot.comm.transform.position.z);
 
+        Debug.Log(savedCnt + " :: " + savedPositions[savedCnt * 9] + " :: " + savedPositions[savedCnt * 9 + 1] + " :: " + savedPositions[savedCnt * 9 + 2] + " :: "
+        + savedPositions[savedCnt * 9 + 3] + " :: " + savedPositions[savedCnt * 9 + 4] + " :: " + savedPositions[savedCnt * 9 + 5] + " :: " +
+        savedPositions[savedCnt * 9 + 6] + " :: " + savedPositions[savedCnt * 9 + 7] + " :: " + savedPositions[savedCnt * 9 + 8]);
         savedCnt++;
-        Debug.Log(savedCnt);
     }
     public void ClearSaved()
     {
@@ -228,7 +230,24 @@ public class Panel : MonoBehaviour
 
     public void RepeatIt()
     {
-        isRepeat = true;
+        isRepeat = !isRepeat;
+    }
+
+    public void ArduinoCon()
+    {
+        arduinoCon = !arduinoCon;
+        if (arduinoCon)
+        {
+            ColorBlock col = arduinoBut.colors;
+            col.normalColor = new Color(0, 1f, 0);
+            arduinoBut.colors = col;
+        }
+        else
+        {
+            ColorBlock col = arduinoBut.colors;
+            col.normalColor = new Color(1f, 0, 0);
+            arduinoBut.colors = col;
+        }
     }
 
 }
