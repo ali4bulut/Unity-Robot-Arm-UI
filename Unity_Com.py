@@ -15,7 +15,7 @@ if ports:
         if "CH340" in temp:
             port_name = temp[0]
 
-print(port_name)
+print("PORT : " + port_name)
 
 try:
     host, port = "127.0.0.1", 25001
@@ -34,21 +34,17 @@ try:
     robot = RobotKol.RobotKol(PT, uzuvlar)
 
     if port_name != "None":
-        ser = serial.Serial(port_name, 9600)
+        ser = serial.Serial(port_name, 2000000)
         arduino = True
     else:
         print("Arduino Bulunamadı!!!")
         arduino = False
 
-    counter = 32  # Below 32 everything in ASCII is gibberish
     while True:
-
-        time.sleep(0.2)  # sleep 0.5 sec
+        time.sleep(0.1)  # sleep 0.5 sec
 
         receivedData = sock.recv(1024).decode("utf-8")  # receive data in Byte from C#, and converting it to String
         f = list(map(float, receivedData.split("|")))
-        # print(f)
-
         if f:
             ik = robot.IK(f[3] * np.pi / 180, f[4] * np.pi / 180, f[5] * np.pi / 180, f[0], f[1], f[2])
 
@@ -57,33 +53,15 @@ try:
 
             posString = ','.join(map(str, acilar))  # Converting Vector3 to a string, example "0,0,0"
             sock.sendall(posString.encode("utf-8"))  # Converting string to Byte, and sending it to C#
-            # print(posString)
 
-        if arduino:
-            counter += 1
-            ser.write(
-                str(chr(counter)).encode("utf-8"))  # Convert the decimal number to ASCII then send it to the Arduino
-            print(ser.readline().decode("ascii"))  # Read the newest output from the Arduino
+            if arduino and f[6] == 1.0:
+                send_data = "{:.2f}".format(acilar[0]) + "&" + "{:.2f}".format(acilar[1]) + "&" + "{:.2f}".format(
+                    acilar[2]) + "&" + "{:.2f}".format(acilar[3]) + "&" + "{:.2f}".format(
+                    acilar[4]) + "&" + "{:.2f}".format(acilar[5])
+                ser.write(send_data.encode("utf-8"))  # Convert the decimal number to ASCII then send it to the Arduino
+                print(ser.readline().decode("utf-8"))  # Read the newest output from the Arduino
+                # time.sleep(.1)
 
-            if counter == 99:
-                counter = 32
 
 except socket.error as msg:
     print("Caught exception socket.error : %s" % msg)
-
-    # while True:
-    #     time.sleep(0.5)  # sleep 0.5 sec
-    #
-    #     receivedData = sock.recv(1024).decode("UTF-8")  # receive data in Byte from C#, and converting it to String
-    #     # print(receivedData, end="\n")
-    #     f = list(map(float, receivedData.split("|")))
-    #     print(f)
-    #
-    #     ik = robot.IK(f[3] * np.pi / 180, f[4] * np.pi / 180, f[5] * np.pi / 180, f[0], f[1], f[2])
-    #
-    #     for i in range(len(ik)):
-    #         acilar[i] = ik[i] * (180 / np.pi)
-    #
-    #     posString = ','.join(map(str, acilar))  # Converting Vector3 to a string, example "0,0,0"
-    #     print(posString)
-    #     sock.sendall(posString.encode("UTF-8"))  # Converting string to Byte, and sending it to C#
